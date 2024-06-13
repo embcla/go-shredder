@@ -18,17 +18,17 @@ var globalFileObjPtr (*os.File) = nil
 var globalFilePath string = ""
 var globalFileSize int64 = 0
 
-func execute(file string, iterations int) {
-	currentWorkingDirectory, err := os.Getwd()
-	if err != nil {
-		return
-	}
-	fileName := currentWorkingDirectory + "/" + file
-	commandOptions := "-vun" + strconv.Itoa(iterations) + " " + fileName
-	fmt.Println("Running command: " + commandName + " " + commandOptions)
-	// cmd := exec.Command("bash", "-c", commandName, commandOptions)
+// func execute(file string, iterations int) {
+// 	currentWorkingDirectory, err := os.Getwd()
+// 	if err != nil {
+// 		return
+// 	}
+// 	fileName := currentWorkingDirectory + "/" + file
+// 	commandOptions := "-vun" + strconv.Itoa(iterations) + " " + fileName
+// 	fmt.Println("Running command: " + commandName + " " + commandOptions)
+// 	// cmd := exec.Command("bash", "-c", commandName, commandOptions)
 
-}
+// }
 
 func runOsCommand(commandName string, cmdFlags ...string) bool {
 	var commandOptions strings.Builder
@@ -57,7 +57,7 @@ func runOsCommand(commandName string, cmdFlags ...string) bool {
 	}
 }
 
-func getAbsolutePath(file string) string {
+func addCwdToFilePath(file string) string {
 	fileName := ""
 	currentWorkingDirectory, err := os.Getwd()
 	if err != nil {
@@ -123,7 +123,7 @@ func execute_wipe_shred(iterations int) bool {
 
 func validateFileName(file string) bool {
 	if strings.Contains(file, "/") == false {
-		globalFilePath = getAbsolutePath(file)
+		globalFilePath = addCwdToFilePath(file)
 
 	} else {
 		globalFilePath = file
@@ -153,7 +153,7 @@ func main() {
 2 - shredding using wipe\n`)
 		flag.Usage = func() {
 			fmt.Println("Usage of ", os.Args[0], ":")
-			fmt.Println("   ", os.Args[0], " -iter 3 -file myfile -algo 2\n")
+			fmt.Println("   ", os.Args[0], " -iter 3 -file myfile -algo 2")
 			flag.PrintDefaults()
 		}
 		flag.Parse()
